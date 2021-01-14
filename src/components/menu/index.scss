@@ -1,0 +1,35 @@
+.menu {
+  color: var(--GRAY2);
+  font-size: 16px;
+}
+
+.menu__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__btn {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  height: var(--menu__btn-height, auto);
+  padding-right: 10px;
+  text-decoration: none;
+  &:visited {
+    color: var(--GRAY2);
+  }
+  &[aria-current='page'],
+  &:hover,
+  &:focus {
+    color: var(--COLOR1);
+    cursor: pointer;
+  }
+}
+
+.menu__child-indicator {
+  position: absolute;
+  right: 0;
+  font-size: 6px;
+}

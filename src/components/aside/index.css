@@ -1,0 +1,20 @@
+.aside {
+  width: var(--ASIDE_WIDTH);
+  height: 100%;
+  background-color: var(--GRAY1);
+  color: var(--GRAY2);
+}
+
+.aside__logo {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 171px;
+}
+
+.aside__menu {
+  --menu__btn-height: 50px;
+
+  padding: 48px 35px 22px 36px;
+}

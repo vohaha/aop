@@ -1,0 +1,17 @@
+.header {
+  display: flex;
+  align-items: center;
+  height: var(--HEDADER_HEIGHT);
+  background-color: var(--GRAY2);
+  padding-left: 39px;
+}
+
+.header__title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.header__icon {
+  margin-left: 22px;
+}

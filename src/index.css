@@ -1,13 +1,44 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'GT Walsheim';
+  font-weight: 400;
+  src: url('./assests/fonts/GT-Walsheim-Regular-Trial.woff2') format('woff2');
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@font-face {
+  font-family: 'GT Walsheim';
+  font-weight: 700;
+  src: url('./assests/fonts/GT-Walsheim-Bold-Trial.woff2') format('woff2');
+}
+
+:root {
+  /* colors */
+  --GRAY1: #2c2c2c;
+  --GRAY2: #fff;
+  --GRAY3: #efefef;
+  --GRAY4: #c4c4c4;
+  --COLOR1: #00ff9d;
+  --COLOR2: #26009e;
+  /* LAYOUT */
+  --HEDADER_HEIGHT: 78px;
+  --ASIDE_WIDTH: 300px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'GT Walsheim', sans-serif;
+}
+
+#root {
+  height: 100%;
 }
