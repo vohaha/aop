@@ -4,35 +4,34 @@ import './index.css';
 import { Logo } from '../logo';
 import { Menu } from '../menu';
 
-const to = '/';
 const MAIN_MENU = [
   {
     text: 'Dashboard',
-    to,
+    to: '/',
   },
   {
     text: 'Community management',
-    to,
+    to: '1',
     child: {
       text: '> Community management',
-      to,
+      to: '2',
     },
   },
   {
     text: 'Message feed',
-    to,
+    to: '3',
   },
   {
     text: 'Notification overview',
-    to,
+    to: '4',
   },
   {
     text: 'Events',
-    to,
+    to: '5',
   },
   {
     text: 'Survey & Poll',
-    to,
+    to: '6',
   },
   {
     text: 'Practical & More',
@@ -40,18 +39,18 @@ const MAIN_MENU = [
   },
   {
     text: 'User management',
-    to,
+    to: '7',
     child: {
       text: '> User management',
-      to,
+      to: '8',
     },
   },
   {
     text: 'Management',
-    to,
+    to: '9',
     child: {
       text: '> Management',
-      to,
+      to: '10',
     },
   },
 ];

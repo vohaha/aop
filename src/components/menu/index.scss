@@ -17,8 +17,9 @@
   height: var(--menu__btn-height, auto);
   padding-right: 10px;
   text-decoration: none;
+  color: var(--GRAY2);
   &:visited {
-    color: var(--GRAY2);
+    color: inherit;
   }
   &[aria-current='page'],
   &:hover,

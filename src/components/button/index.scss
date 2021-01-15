@@ -23,4 +23,9 @@
   border-radius: 6px;
   color: var(--GRAY2);
   height: 38px;
+  transition: background-color 100ms ease-out;
+  &:hover {
+    background-color: var(--COLOR3);
+    transition: background-color 100ms ease-out;
+  }
 }

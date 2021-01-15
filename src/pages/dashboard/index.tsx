@@ -14,9 +14,5 @@ export function DashboardPage({
 > &
   RouteComponentProps &
   DashboardPageProps) {
-  return (
-    <div className={cn('dashboard-page', className)} {...props}>
-      Dashboard page
-    </div>
-  );
+  return <div className={cn('dashboard-page', className)}>Dashboard page</div>;
 }
