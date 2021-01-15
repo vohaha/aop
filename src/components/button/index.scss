@@ -1,6 +1,7 @@
 .button {
   appearance: none;
   display: inline-flex;
+  height: var(--button__height, auto);
   padding: 0;
   margin: 0;
   font: inherit;
@@ -17,12 +18,14 @@
 }
 
 .button--primary {
+  --button__height: 38px;
   align-items: center;
   justify-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
   background-color: var(--COLOR2);
   border-radius: 6px;
   color: var(--GRAY2);
-  height: 38px;
   transition: background-color 100ms ease-out;
   &:hover {
     background-color: var(--COLOR3);

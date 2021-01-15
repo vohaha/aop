@@ -4,8 +4,11 @@ import { RouteComponentProps } from '@reach/router';
 import { Page } from '../../components/page';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import './index.scss';
 import { Entity, EntityType } from '../../components/entity';
+import * as Modal from '@accessible/modal';
+import './index.scss';
+import { Prompt } from '../../components/prompt';
+import { ModalTarget } from '../../components/modal';
 
 const ENTITIES = [
   {
@@ -40,7 +43,7 @@ const ENTITIES = [
   },
   {
     name: 'evacuation plan',
-    type: EntityType.folder,
+    type: EntityType.image,
     time: 'Dec 11, 2019',
     children: [],
   },
@@ -49,9 +52,7 @@ const ENTITIES = [
 export interface PracticalProps {}
 
 export function Practical({
-  children,
   className,
-  ...props
 }: React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
@@ -63,39 +64,48 @@ export function Practical({
     setValue(e.target.value);
   }, []);
   return (
-    <Page className={cn('practical', className)}>
-      <header className="practical__header">
-        <div className="practical__search">
-          <Input
-            fullwidth
-            icon="search"
-            placeholder="Search document"
-            onChange={onChangeCb}
-            value={value}
-          />
-        </div>
-        <div className="practical__controls">
-          <div className="practical__control-1">
-            <Button fullwidth className="button--primary">
-              Create folder
-            </Button>
+    <Modal.Modal>
+      <Page className={cn('practical', className)}>
+        <header className="practical__header">
+          <div className="practical__search">
+            <Input
+              fullwidth
+              icon="search"
+              placeholder="Search document"
+              onChange={onChangeCb}
+              value={value}
+            />
           </div>
-          <div className="practical__control-2">
-            <Button fullwidth className="button--primary">
-              Upload file
-            </Button>
+          <div className="practical__controls">
+            <div className="practical__control-1">
+              <Modal.Trigger>
+                <Button fullwidth className="button--primary">
+                  Create folder
+                </Button>
+              </Modal.Trigger>
+            </div>
+            <div className="practical__control-2">
+              <Button fullwidth className="button--primary">
+                Upload file
+              </Button>
+            </div>
           </div>
+        </header>
+        <div className="practical__body">
+          <ul className="practical__list">
+            {ENTITIES.map((entity) => (
+              <li key={entity.name + entity.time}>
+                <Entity {...entity} />
+              </li>
+            ))}
+          </ul>
         </div>
-      </header>
-      <div className="practical__body">
-        <ul className="practical__list">
-          {ENTITIES.map((entity) => (
-            <li key={entity.name + entity.time}>
-              <Entity {...entity} />
-            </li>
-          ))}
-        </ul>
-      </div>
-    </Page>
+        <ModalTarget>
+          <Prompt resolveText="Create" title="Create Folder">
+            <Input placeholder="Enter folder name" label="Name" fullwidth />
+          </Prompt>
+        </ModalTarget>
+      </Page>
+    </Modal.Modal>
   );
 }

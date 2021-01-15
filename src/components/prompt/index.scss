@@ -1,0 +1,29 @@
+.prompt {
+  --input__height: 40px;
+  padding: 27px 35px 20px;
+  color: var(--GRAY1);
+  background-color: var(--GRAY2);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 6px;
+}
+
+.prompt__header {
+  margin-bottom: 33px;
+}
+
+.prompt__title {
+  margin: 0;
+  font-size: 20px;
+}
+
+.prompt__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 36px;
+  color: var(--COLOR2);
+}
+
+.prompt__resolve {
+  margin-left: 20px;
+}

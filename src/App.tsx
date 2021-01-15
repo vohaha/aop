@@ -6,13 +6,16 @@ import { Main } from './components/main';
 
 function App() {
   return (
-    <Layout>
-      {{
-        header: <Header />,
-        aside: <Aside />,
-        main: <Main />,
-      }}
-    </Layout>
+    <>
+      <Layout>
+        {{
+          header: <Header />,
+          aside: <Aside />,
+          main: <Main />,
+        }}
+      </Layout>
+      <div id="portals" />
+    </>
   );
 }
 

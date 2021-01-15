@@ -1,18 +1,28 @@
 .input {
   position: relative;
   display: inline-flex;
-  align-items: center;
-  border: 1px solid var(--GRAY4);
-  height: var(--input__height, 48px);
-  padding: 0 20px;
-  border-radius: 3px;
+  flex-direction: column;
   &:focus-within {
     --input__placehodler-opacity: 0;
   }
 }
 
+.input__label {
+  margin-bottom: 6px;
+}
+
 .input--fullwidth {
   width: 100%;
+}
+
+.input__inner {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--GRAY4);
+  height: var(--input__height, 48px);
+  padding: 0 20px;
+  border-radius: 3px;
 }
 
 .input__placeholder {
@@ -28,12 +38,15 @@
   }
 }
 
+.input__icon {
+  margin: 0 20px 0 0;
+}
+
 .input__control {
   appearance: none;
   width: 100%;
   height: 100%;
   margin: 0;
-  padding: 0 0 0 20px;
   border: 0;
   outline: 0;
   font: inherit;
