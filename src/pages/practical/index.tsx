@@ -4,48 +4,60 @@ import { RouteComponentProps } from '@reach/router';
 import { Page } from '../../components/page';
 import { Input } from '../../components/input';
 import { Button } from '../../components/button';
-import { Entity, EntityType } from '../../components/entity';
 import * as Modal from '@accessible/modal';
 import { Prompt } from '../../components/prompt';
 import { ModalTarget } from '../../components/modal';
 import './index.scss';
+import {
+  FILES_TREE_TYPES,
+  FilesTree,
+  FilesTreeEntity,
+  FilesTreeLeaf,
+} from '../../components/files-tree';
 
-const ENTITIES = [
+const TREE: FilesTreeLeaf[] = [
   {
     name: 'Floor plan',
-    type: EntityType.folder,
+    type: FILES_TREE_TYPES.folder,
     time: 'Nov 16, 2020',
-    children: [],
+    inner: [
+      {
+        name: 'Floor 1',
+        type: FILES_TREE_TYPES.file,
+        time: 'Nov 16, 2020',
+        inner: [],
+      },
+    ],
   },
   {
     name: 'Manuals',
-    type: EntityType.folder,
+    type: FILES_TREE_TYPES.file,
     time: 'Aug 23, 2020',
-    children: [],
+    inner: [],
   },
   {
     name: 'Home tips and more',
-    type: EntityType.folder,
+    type: FILES_TREE_TYPES.folder,
     time: 'Jul 17, 2020',
-    children: [],
+    inner: [],
   },
   {
     name: 'Partners',
-    type: EntityType.folder,
+    type: FILES_TREE_TYPES.folder,
     time: 'Mar 05, 2020',
-    children: [],
+    inner: [],
   },
   {
     name: 'internal contacts',
-    type: EntityType.text,
+    type: FILES_TREE_TYPES.file,
     time: 'Dec 12, 2019',
-    children: [],
+    inner: [],
   },
   {
     name: 'evacuation plan',
-    type: EntityType.image,
+    type: FILES_TREE_TYPES.file,
     time: 'Dec 11, 2019',
-    children: [],
+    inner: [],
   },
 ];
 
@@ -63,11 +75,6 @@ export function Practical({
   const onChangeCb = useCallback((e) => {
     setValue(e.target.value);
   }, []);
-  const [treeData, setTreeData] = useState<any>([
-    { title: 'Chicken', children: [{ title: 'Egg' }] },
-    { title: 'Fish', children: [{ title: 'fingerline' }] },
-  ]);
-  const treDataOnChange = useCallback((treeData) => setTreeData(treeData), []);
   return (
     <Modal.Modal>
       <Page className={cn('practical', className)}>
@@ -97,13 +104,19 @@ export function Practical({
           </div>
         </header>
         <div className="practical__body">
-          <ul className="practical__list">
-            {ENTITIES.map((entity) => (
-              <li key={entity.name + entity.time}>
-                <Entity {...entity} />
-              </li>
-            ))}
-          </ul>
+          <FilesTree
+            tree={TREE}
+            itemRenderer={(leaf) => <FilesTreeEntity leaf={leaf} />}
+          />
+          {/*<ul className="practical__list">*/}
+          {/*  {TREE.map((entity) => (*/}
+          {/*    <FilesTreePlot key={entity.name + entity.time} tag="li">*/}
+          {/*      <FilesTreeItem type={FILES_TREE_TYPES.file}>*/}
+          {/*        <Entity {...entity} />*/}
+          {/*      </FilesTreeItem>*/}
+          {/*    </FilesTreePlot>*/}
+          {/*  ))}*/}
+          {/*</ul>*/}
         </div>
         <ModalTarget>
           <Prompt resolveText="Create" title="Create Folder">
