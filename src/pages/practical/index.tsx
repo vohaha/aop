@@ -6,9 +6,9 @@ import { Input } from '../../components/input';
 import { Button } from '../../components/button';
 import { Entity, EntityType } from '../../components/entity';
 import * as Modal from '@accessible/modal';
-import './index.scss';
 import { Prompt } from '../../components/prompt';
 import { ModalTarget } from '../../components/modal';
+import './index.scss';
 
 const ENTITIES = [
   {
@@ -63,6 +63,11 @@ export function Practical({
   const onChangeCb = useCallback((e) => {
     setValue(e.target.value);
   }, []);
+  const [treeData, setTreeData] = useState<any>([
+    { title: 'Chicken', children: [{ title: 'Egg' }] },
+    { title: 'Fish', children: [{ title: 'fingerline' }] },
+  ]);
+  const treDataOnChange = useCallback((treeData) => setTreeData(treeData), []);
   return (
     <Modal.Modal>
       <Page className={cn('practical', className)}>
