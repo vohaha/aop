@@ -2,10 +2,10 @@
 }
 
 .files-tree__plot {
+  position: relative;
 }
 
 .files-tree__plot--is-over:not(.files-tree__plot--root) {
-  position: relative;
   z-index: var(--Z-BASE);
   &::before {
     content: '';

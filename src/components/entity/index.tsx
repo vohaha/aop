@@ -10,6 +10,7 @@ export enum EntityType {
 }
 
 export interface EntityData {
+  id: string;
   type: EntityType;
   name: string;
   time: string;

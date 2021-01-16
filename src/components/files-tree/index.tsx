@@ -1,9 +1,10 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import cn from 'classnames';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
+import traverse from 'traverse';
 
 export enum FILES_TREE_TYPES {
   file = 'file',
@@ -11,6 +12,7 @@ export enum FILES_TREE_TYPES {
 }
 
 export interface FilesTreeLeaf {
+  id: string;
   type: FILES_TREE_TYPES;
   name: string;
   time: string;
@@ -19,7 +21,11 @@ export interface FilesTreeLeaf {
 
 export interface FilesTreeProps {
   tree: FilesTreeLeaf[];
-  itemRenderer: (props: FilesTreeLeaf) => React.ReactChild;
+  itemRenderer: (
+    props: FilesTreeLeaf,
+    tree: FilesTreeLeaf[],
+    setTree: any,
+  ) => React.ReactChild;
   classes?: {
     tree?: string;
     plot?: string;
@@ -32,34 +38,38 @@ export function FilesTree({
   className,
   itemRenderer,
   classes,
-  tree,
+  tree: initTree,
   ...props
 }: React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 > &
   FilesTreeProps) {
+  const [tree, setTree] = useState(initTree);
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={cn('files-tree', className, classes?.tree)}>
-        <FilesTreePlot type={FILES_TREE_TYPES.folder} isRoot>
-          {tree.map((leaf) =>
-            leaf.type === FILES_TREE_TYPES.folder ? (
-              <FilesTreePlot
+        {/*<FilesTreePlot type={FILES_TREE_TYPES.folder} isRoot id="root">*/}
+        {/*  */}
+        {/*</FilesTreePlot>*/}
+        {tree
+          .filter((item) => item != null)
+          .map((leaf) => (
+            <FilesTreePlot
+              id={leaf.id}
+              type={leaf.type}
+              key={leaf.name + leaf.time}
+              className={classes?.plot}>
+              <FilesTreeItem
+                tree={tree}
+                setTree={setTree}
+                className={classes?.item}
                 type={leaf.type}
-                key={leaf.name + leaf.time}
-                className={classes?.plot}>
-                <FilesTreeItem className={classes?.item} type={leaf.type}>
-                  {itemRenderer(leaf)}
-                </FilesTreeItem>
-              </FilesTreePlot>
-            ) : (
-              <FilesTreeItem className={classes?.item} type={leaf.type}>
-                {itemRenderer(leaf)}
+                id={leaf.id}>
+                {itemRenderer(leaf, tree, setTree)}
               </FilesTreeItem>
-            ),
-          )}
-        </FilesTreePlot>
+            </FilesTreePlot>
+          ))}
       </div>
     </DndProvider>
   );
@@ -67,6 +77,7 @@ export function FilesTree({
 
 export interface FilesTreePlotProps {
   type: FILES_TREE_TYPES;
+  id: string;
   isRoot?: boolean;
   tag?: string;
 }
@@ -76,6 +87,7 @@ export function FilesTreePlot({
   className,
   tag = 'div',
   type,
+  id,
   isRoot,
   ...props
 }: React.DetailedHTMLProps<
@@ -88,12 +100,15 @@ export function FilesTreePlot({
       type === FILES_TREE_TYPES.folder
         ? [FILES_TREE_TYPES.folder, FILES_TREE_TYPES.file]
         : [],
-    drop: (item, monitor) => {
-      console.log('DragObject', item);
-      console.log('DropTargetMonitor', monitor);
-    },
+    drop: (item, monitor) => ({
+      dropId: id,
+      dragItem: {
+        ...item,
+        dragType: monitor.getItemType(),
+      },
+    }),
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      isOver: monitor.isOver({ shallow: true }),
     }),
   });
   const Tag: any = `${tag}`;
@@ -112,12 +127,18 @@ export function FilesTreePlot({
 
 export interface FilesTreeItemProps {
   type: FILES_TREE_TYPES;
+  id: FilesTreeLeaf['id'];
+  tree: FilesTreeLeaf[];
+  setTree: any;
 }
 
 export function FilesTreeItem({
   children,
   className,
   type,
+  id,
+  tree,
+  setTree,
   ...props
 }: React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -126,6 +147,34 @@ export function FilesTreeItem({
   FilesTreeItemProps) {
   const [{ opacity }, dragRef] = useDrag({
     item: { type },
+    end: (item, monitor) => {
+      if (monitor.didDrop()) {
+        const copiedTree = [...tree];
+        const dropResult = monitor.getDropResult();
+        traverse(copiedTree).forEach(function (node) {
+          if (node?.id === dropResult?.dragItem.dragId) {
+            const copiedDrag = traverse.clone(this.node);
+            if (this.parent) {
+              this.remove(true);
+              traverse(copiedTree).forEach(function (node) {
+                if (node?.id === dropResult?.dropId) {
+                  const dropItem = this.node;
+                  this.update({
+                    ...dropItem,
+                    inner: [...dropItem.inner, copiedDrag],
+                  });
+                }
+              });
+            }
+          }
+        });
+        setTree(copiedTree);
+      }
+    },
+    begin: (monitor) => ({
+      ...monitor.getItem(),
+      dragId: id,
+    }),
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -143,6 +192,8 @@ export function FilesTreeItem({
 
 export interface FilesTreeEntityProps {
   leaf: FilesTreeLeaf;
+  tree: FilesTreeLeaf[];
+  setTree: any;
 }
 
 export function transformLeafToEntity(leaf: FilesTreeLeaf) {
@@ -172,6 +223,8 @@ export function FilesTreeEntity({
   children,
   className,
   leaf,
+  tree,
+  setTree,
   ...props
 }: React.DetailedHTMLProps<
   React.HTMLAttributes<HTMLDivElement>,
@@ -179,21 +232,29 @@ export function FilesTreeEntity({
 > &
   FilesTreeEntityProps) {
   const entityData = transformLeafToEntity(leaf);
-  const renderCb = useCallback((entityProps: EntityProps) => {
-    const filesTreeType =
-      entityProps.data.type === EntityType.folder
-        ? FILES_TREE_TYPES.folder
-        : FILES_TREE_TYPES.file;
-    return (
-      <FilesTreePlot
-        type={filesTreeType}
-        key={entityProps.data.time + entityProps.data.name}>
-        <FilesTreeItem type={filesTreeType}>
-          <Entity {...entityProps} />
-        </FilesTreeItem>
-      </FilesTreePlot>
-    );
-  }, []);
+  const renderCb = useCallback(
+    (entityProps: EntityProps) => {
+      const filesTreeType =
+        entityProps.data.type === EntityType.folder
+          ? FILES_TREE_TYPES.folder
+          : FILES_TREE_TYPES.file;
+      return (
+        <FilesTreePlot
+          id={entityProps.data.id}
+          type={filesTreeType}
+          key={entityProps.data.time + entityProps.data.name}>
+          <FilesTreeItem
+            type={filesTreeType}
+            id={entityProps.data.id}
+            tree={tree}
+            setTree={setTree}>
+            <Entity {...entityProps} />
+          </FilesTreeItem>
+        </FilesTreePlot>
+      );
+    },
+    [setTree, tree],
+  );
   return (
     <Entity
       className={cn('files-tree-entity', className)}

@@ -17,43 +17,57 @@ import {
 
 const TREE: FilesTreeLeaf[] = [
   {
+    id: '1',
     name: 'Floor plan',
     type: FILES_TREE_TYPES.folder,
     time: 'Nov 16, 2020',
     inner: [
       {
+        id: '2',
         name: 'Floor 1',
-        type: FILES_TREE_TYPES.file,
+        type: FILES_TREE_TYPES.folder,
         time: 'Nov 16, 2020',
+        inner: [],
+      },
+      {
+        id: '3',
+        name: 'Floor 1 file',
+        type: FILES_TREE_TYPES.file,
+        time: 'Aug 23, 2020',
         inner: [],
       },
     ],
   },
   {
+    id: '4',
     name: 'Manuals',
     type: FILES_TREE_TYPES.file,
     time: 'Aug 23, 2020',
     inner: [],
   },
   {
+    id: '5',
     name: 'Home tips and more',
     type: FILES_TREE_TYPES.folder,
     time: 'Jul 17, 2020',
     inner: [],
   },
   {
+    id: '6',
     name: 'Partners',
     type: FILES_TREE_TYPES.folder,
     time: 'Mar 05, 2020',
     inner: [],
   },
   {
+    id: '7',
     name: 'internal contacts',
     type: FILES_TREE_TYPES.file,
     time: 'Dec 12, 2019',
     inner: [],
   },
   {
+    id: '8',
     name: 'evacuation plan',
     type: FILES_TREE_TYPES.file,
     time: 'Dec 11, 2019',
@@ -106,7 +120,9 @@ export function Practical({
         <div className="practical__body">
           <FilesTree
             tree={TREE}
-            itemRenderer={(leaf) => <FilesTreeEntity leaf={leaf} />}
+            itemRenderer={(leaf, tree, setTree) => (
+              <FilesTreeEntity leaf={leaf} tree={tree} setTree={setTree} />
+            )}
           />
           {/*<ul className="practical__list">*/}
           {/*  {TREE.map((entity) => (*/}
