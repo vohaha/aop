@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import cn from 'classnames';
-import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { DndProvider, DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
 import traverse from 'traverse';
@@ -20,14 +21,13 @@ export interface FilesTreeLeaf {
 }
 
 export interface FilesTreeProps {
-  tree: FilesTreeLeaf[];
+  tree: FilesTreeLeaf;
   itemRenderer: (
     props: FilesTreeLeaf,
-    tree: FilesTreeLeaf[],
+    tree: FilesTreeLeaf,
     setTree: any,
   ) => React.ReactChild;
   classes?: {
-    tree?: string;
     plot?: string;
     item?: string;
   };
@@ -48,14 +48,17 @@ export function FilesTree({
   const [tree, setTree] = useState(initTree);
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={cn('files-tree', className, classes?.tree)}>
-        {/*<FilesTreePlot type={FILES_TREE_TYPES.folder} isRoot id="root">*/}
-        {/*  */}
-        {/*</FilesTreePlot>*/}
-        {tree
-          .filter((item) => item != null)
-          .map((leaf) => (
+      <div className={cn('files-tree', className)}>
+        <FilesTreePlot
+          tree={tree}
+          setTree={setTree}
+          type={tree.type}
+          id={tree.id}
+          isRoot>
+          {tree.inner.map((leaf) => (
             <FilesTreePlot
+              tree={tree}
+              setTree={setTree}
               id={leaf.id}
               type={leaf.type}
               key={leaf.name + leaf.time}
@@ -70,6 +73,7 @@ export function FilesTree({
               </FilesTreeItem>
             </FilesTreePlot>
           ))}
+        </FilesTreePlot>
       </div>
     </DndProvider>
   );
@@ -78,6 +82,8 @@ export function FilesTree({
 export interface FilesTreePlotProps {
   type: FILES_TREE_TYPES;
   id: string;
+  tree: FilesTreeLeaf;
+  setTree: any;
   isRoot?: boolean;
   tag?: string;
 }
@@ -88,6 +94,8 @@ export function FilesTreePlot({
   tag = 'div',
   type,
   id,
+  tree,
+  setTree,
   isRoot,
   ...props
 }: React.DetailedHTMLProps<
@@ -95,21 +103,14 @@ export function FilesTreePlot({
   HTMLDivElement
 > &
   FilesTreePlotProps) {
+  const [lastDropId, setLastDropId] = useState('');
   const [{ isOver }, drop] = useDrop({
     accept:
       type === FILES_TREE_TYPES.folder
         ? [FILES_TREE_TYPES.folder, FILES_TREE_TYPES.file]
         : [],
-    drop: (item, monitor) => ({
-      dropId: id,
-      dragItem: {
-        ...item,
-        dragType: monitor.getItemType(),
-      },
-    }),
-    collect: (monitor) => ({
-      isOver: monitor.isOver({ shallow: true }),
-    }),
+    drop: (item, monitor) => (monitor.isOver() ? { id } : undefined),
+    collect: (monitor) => ({ isOver: monitor.isOver() }),
   });
   const Tag: any = `${tag}`;
   return (
@@ -128,7 +129,7 @@ export function FilesTreePlot({
 export interface FilesTreeItemProps {
   type: FILES_TREE_TYPES;
   id: FilesTreeLeaf['id'];
-  tree: FilesTreeLeaf[];
+  tree: FilesTreeLeaf;
   setTree: any;
 }
 
@@ -146,35 +147,14 @@ export function FilesTreeItem({
 > &
   FilesTreeItemProps) {
   const [{ opacity }, dragRef] = useDrag({
-    item: { type },
+    item: { type, id },
     end: (item, monitor) => {
-      if (monitor.didDrop()) {
-        const copiedTree = [...tree];
-        const dropResult = monitor.getDropResult();
-        traverse(copiedTree).forEach(function (node) {
-          if (node?.id === dropResult?.dragItem.dragId) {
-            const copiedDrag = traverse.clone(this.node);
-            if (this.parent) {
-              this.remove(true);
-              traverse(copiedTree).forEach(function (node) {
-                if (node?.id === dropResult?.dropId) {
-                  const dropItem = this.node;
-                  this.update({
-                    ...dropItem,
-                    inner: [...dropItem.inner, copiedDrag],
-                  });
-                }
-              });
-            }
-          }
-        });
-        setTree(copiedTree);
+      const dropResult = monitor.getDropResult();
+      if (dropResult == null) {
+        return;
       }
+      moveItem(tree, setTree, item?.id, dropResult.id);
     },
-    begin: (monitor) => ({
-      ...monitor.getItem(),
-      dragId: id,
-    }),
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.5 : 1,
     }),
@@ -190,9 +170,36 @@ export function FilesTreeItem({
   );
 }
 
+function moveItem(
+  tree: FilesTreeLeaf,
+  setTree: any,
+  dragId: FilesTreeLeaf['id'] | undefined,
+  dropId: FilesTreeLeaf['id'] | undefined,
+) {
+  if (dropId == null || dragId == null) {
+    return;
+  }
+  const copiedTree = { ...tree };
+  // need to improve big O and reduce memory consuming
+  traverse(copiedTree).forEach(function (node) {
+    if (node?.id === dragId) {
+      const copiedDrag = traverse.clone(this.node);
+      if (this.parent) {
+        this.remove(true);
+        traverse(copiedTree).forEach(function (node) {
+          if (node?.id === dropId) {
+            this.node.inner.push(copiedDrag);
+          }
+        });
+      }
+    }
+  });
+  setTree(copiedTree);
+}
+
 export interface FilesTreeEntityProps {
   leaf: FilesTreeLeaf;
-  tree: FilesTreeLeaf[];
+  tree: FilesTreeLeaf;
   setTree: any;
 }
 
@@ -240,6 +247,8 @@ export function FilesTreeEntity({
           : FILES_TREE_TYPES.file;
       return (
         <FilesTreePlot
+          tree={tree}
+          setTree={setTree}
           id={entityProps.data.id}
           type={filesTreeType}
           key={entityProps.data.time + entityProps.data.name}>

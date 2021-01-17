@@ -15,65 +15,71 @@ import {
   FilesTreeLeaf,
 } from '../../components/files-tree';
 
-const TREE: FilesTreeLeaf[] = [
-  {
-    id: '1',
-    name: 'Floor plan',
-    type: FILES_TREE_TYPES.folder,
-    time: 'Nov 16, 2020',
-    inner: [
-      {
-        id: '2',
-        name: 'Floor 1',
-        type: FILES_TREE_TYPES.folder,
-        time: 'Nov 16, 2020',
-        inner: [],
-      },
-      {
-        id: '3',
-        name: 'Floor 1 file',
-        type: FILES_TREE_TYPES.file,
-        time: 'Aug 23, 2020',
-        inner: [],
-      },
-    ],
-  },
-  {
-    id: '4',
-    name: 'Manuals',
-    type: FILES_TREE_TYPES.file,
-    time: 'Aug 23, 2020',
-    inner: [],
-  },
-  {
-    id: '5',
-    name: 'Home tips and more',
-    type: FILES_TREE_TYPES.folder,
-    time: 'Jul 17, 2020',
-    inner: [],
-  },
-  {
-    id: '6',
-    name: 'Partners',
-    type: FILES_TREE_TYPES.folder,
-    time: 'Mar 05, 2020',
-    inner: [],
-  },
-  {
-    id: '7',
-    name: 'internal contacts',
-    type: FILES_TREE_TYPES.file,
-    time: 'Dec 12, 2019',
-    inner: [],
-  },
-  {
-    id: '8',
-    name: 'evacuation plan',
-    type: FILES_TREE_TYPES.file,
-    time: 'Dec 11, 2019',
-    inner: [],
-  },
-];
+const TREE: FilesTreeLeaf = {
+  id: 'root',
+  name: 'root',
+  type: FILES_TREE_TYPES.folder,
+  time: '',
+  inner: [
+    {
+      id: '1',
+      name: 'Floor plan',
+      type: FILES_TREE_TYPES.folder,
+      time: 'Nov 16, 2020',
+      inner: [
+        {
+          id: '2',
+          name: 'Floor 1',
+          type: FILES_TREE_TYPES.folder,
+          time: 'Nov 16, 2020',
+          inner: [],
+        },
+        {
+          id: '3',
+          name: 'Floor 1 file',
+          type: FILES_TREE_TYPES.file,
+          time: 'Aug 23, 2020',
+          inner: [],
+        },
+      ],
+    },
+    {
+      id: '4',
+      name: 'Manuals',
+      type: FILES_TREE_TYPES.file,
+      time: 'Aug 23, 2020',
+      inner: [],
+    },
+    {
+      id: '5',
+      name: 'Home tips and more',
+      type: FILES_TREE_TYPES.folder,
+      time: 'Jul 17, 2020',
+      inner: [],
+    },
+    {
+      id: '6',
+      name: 'Partners',
+      type: FILES_TREE_TYPES.folder,
+      time: 'Mar 05, 2020',
+      inner: [],
+    },
+    {
+      id: '7',
+      name: 'internal contacts',
+      type: FILES_TREE_TYPES.file,
+      time: 'Dec 12, 2019',
+      inner: [],
+    },
+    {
+      id: '8',
+      name: 'evacuation plan',
+      type: FILES_TREE_TYPES.file,
+      time: 'Dec 11, 2019',
+      inner: [],
+    },
+  ],
+};
 
 export interface PracticalProps {}
 
@@ -119,20 +125,12 @@ export function Practical({
         </header>
         <div className="practical__body">
           <FilesTree
+            className="practical__list"
             tree={TREE}
             itemRenderer={(leaf, tree, setTree) => (
               <FilesTreeEntity leaf={leaf} tree={tree} setTree={setTree} />
             )}
           />
-          {/*<ul className="practical__list">*/}
-          {/*  {TREE.map((entity) => (*/}
-          {/*    <FilesTreePlot key={entity.name + entity.time} tag="li">*/}
-          {/*      <FilesTreeItem type={FILES_TREE_TYPES.file}>*/}
-          {/*        <Entity {...entity} />*/}
-          {/*      </FilesTreeItem>*/}
-          {/*    </FilesTreePlot>*/}
-          {/*  ))}*/}
-          {/*</ul>*/}
         </div>
         <ModalTarget>
           <Prompt resolveText="Create" title="Create Folder">

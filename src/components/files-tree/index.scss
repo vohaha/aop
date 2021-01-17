@@ -5,16 +5,10 @@
   position: relative;
 }
 
-.files-tree__plot--is-over:not(.files-tree__plot--root) {
-  z-index: var(--Z-BASE);
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(100, 100, 0, 0.5);
-    z-index: var(--Z-ACTIVE);
-  }
+.files-tree__plot--is-over {
+  border: 1px solid red;
+}
+
+.files-tree__plot--root.files-tree__plot--is-over {
+  padding-bottom: 50px;
 }
