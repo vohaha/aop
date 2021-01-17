@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import cn from 'classnames';
-import { DndProvider, DragSourceMonitor, useDrag, useDrop } from 'react-dnd';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { TouchBackend } from 'react-dnd-touch-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
 import traverse from 'traverse';
@@ -103,14 +102,13 @@ export function FilesTreePlot({
   HTMLDivElement
 > &
   FilesTreePlotProps) {
-  const [lastDropId, setLastDropId] = useState('');
   const [{ isOver }, drop] = useDrop({
     accept:
       type === FILES_TREE_TYPES.folder
         ? [FILES_TREE_TYPES.folder, FILES_TREE_TYPES.file]
         : [],
     drop: (item, monitor) => (monitor.isOver() ? { id } : undefined),
-    collect: (monitor) => ({ isOver: monitor.isOver() }),
+    collect: (monitor) => ({ isOver: monitor.isOver({ shallow: true }) }),
   });
   const Tag: any = `${tag}`;
   return (

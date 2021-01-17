@@ -5,8 +5,8 @@
   position: relative;
 }
 
-.files-tree__plot--is-over {
-  border: 1px solid red;
+.files-tree__plot--is-over > .files-tree__item > .entity > .entity__main {
+  box-shadow: 0 0 0 2px var(--COLOR4) inset;
 }
 
 .files-tree__plot--root.files-tree__plot--is-over {
