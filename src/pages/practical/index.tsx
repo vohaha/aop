@@ -172,7 +172,12 @@ export function Practical({
               </Modal.Trigger>
             </div>
             <div className="practical__control-2">
-              <Button fullwidth className="button--primary">
+              <Button
+                fullwidth
+                className="button--primary"
+                onClick={() => {
+                  alert('Not implemented yet.');
+                }}>
                 Upload file
               </Button>
             </div>

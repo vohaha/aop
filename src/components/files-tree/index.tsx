@@ -129,6 +129,7 @@ export function FilesTreePlot({
       type === FILES_TREE_TYPES.folder
         ? [FILES_TREE_TYPES.folder, FILES_TREE_TYPES.file]
         : [],
+    canDrop: (dragItem, monitor) => (dragItem as any).id !== id,
     drop: (item, monitor) => (monitor.isOver() ? { id } : undefined),
     collect: (monitor) => ({ isOver: monitor.isOver({ shallow: true }) }),
   });
@@ -173,6 +174,7 @@ export function FilesTreeItem({
       if (dropResult == null) {
         return;
       }
+      console.log(dropResult, item?.id);
       moveItem(tree, setTree, item?.id, dropResult.id);
     },
     collect: (monitor) => ({
