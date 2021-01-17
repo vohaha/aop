@@ -1,6 +1,6 @@
 import React from 'react';
 import cn from 'classnames';
-import { RouteComponentProps } from '@reach/router';
+import { Link, RouteComponentProps } from '@reach/router';
 
 export interface DashboardPageProps {}
 
@@ -14,5 +14,10 @@ export function DashboardPage({
 > &
   RouteComponentProps &
   DashboardPageProps) {
-  return <div className={cn('dashboard-page', className)}>Dashboard page</div>;
+  return (
+    <div className={cn('dashboard-page', className)}>
+      Dashboard page. Please, take a look{' '}
+      <Link to="/practical">Practical & More</Link> page.
+    </div>
+  );
 }
