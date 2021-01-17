@@ -17,7 +17,7 @@ export function DashboardPage({
   return (
     <div className={cn('dashboard-page', className)}>
       Dashboard page. Please, take a look{' '}
-      <Link to="/practical">Practical & More</Link> page.
+      <Link to="/aop/practical">Practical & More</Link> page.
     </div>
   );
 }
