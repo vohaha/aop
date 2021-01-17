@@ -7,50 +7,50 @@ import './index.scss';
 const MAIN_MENU = [
   {
     text: 'Dashboard',
-    to: '/',
+    to: '/aop',
   },
   {
     text: 'Community management',
-    to: '1',
+    to: '/aop/1',
     child: {
       text: '> Community management',
-      to: '2',
+      to: '/aop/2',
     },
   },
   {
     text: 'Message feed',
-    to: '3',
+    to: '/aop/3',
   },
   {
     text: 'Notification overview',
-    to: '4',
+    to: '/aop/4',
   },
   {
     text: 'Events',
-    to: '5',
+    to: '/aop/5',
   },
   {
     text: 'Survey & Poll',
-    to: '6',
+    to: '/aop/6',
   },
   {
     text: 'Practical & More',
-    to: 'practical',
+    to: '/aop/practical',
   },
   {
     text: 'User management',
-    to: '7',
+    to: '/aop/7',
     child: {
       text: '> User management',
-      to: '8',
+      to: '/aop/8',
     },
   },
   {
     text: 'Management',
-    to: '9',
+    to: '/aop/9',
     child: {
       text: '> Management',
-      to: '10',
+      to: '/aop/10',
     },
   },
 ];

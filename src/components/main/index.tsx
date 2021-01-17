@@ -9,7 +9,8 @@ export interface MainProps {}
 
 const NotFound = (props: RouteComponentProps) => (
   <div>
-    Sorry, nothing here. Please, take a look <Link to="/practical">Practical & More</Link> page.
+    Sorry, nothing here. Please, take a look{' '}
+    <Link to="/aop/practical">Practical & More</Link> page.
   </div>
 );
 
@@ -24,9 +25,9 @@ export function Main({
   MainProps) {
   return (
     <div className={cn('main', className)} {...props}>
-      <Router style={{ height: '100%' }}>
+      <Router style={{ height: '100%' }} basepath="/aop">
         <DashboardPage path="/" />
-        <Practical path="practical" />
+        <Practical path="/practical" />
         <NotFound default />
       </Router>
     </div>
