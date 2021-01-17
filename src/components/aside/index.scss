@@ -1,7 +1,7 @@
 .aside {
   display: grid;
   grid-template-rows: 171px auto;
-  width: var(--ASIDE_WIDTH);
+  width: 100%;
   height: 100%;
   background-color: var(--GRAY1);
   color: var(--GRAY2);

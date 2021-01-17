@@ -3,15 +3,18 @@
 .layout {
   display: grid;
   grid-template-areas:
-    'aside header'
-    'aside main';
+    'header'
+    'main';
   height: 100%;
   overflow: hidden;
-  grid-template-rows: auto 1fr;
-  grid-template-columns: auto 1fr;
+  grid-template-rows: var(--HEDADER_HEIGHT) calc(100% - var(--HEDADER_HEIGHT));
+  grid-template-columns: 1fr;
   background-color: var(--GRAY3);
   @include media('>=desktop') {
-    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'aside header'
+      'aside main';
+    grid-template-columns: var(--ASIDE_WIDTH) 1fr;
   }
 }
 

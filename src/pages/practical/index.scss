@@ -1,8 +1,16 @@
 @import '../../../src/sass-helpers/media';
 
 .practical {
+  --practical__header_height: 110px;
+  display: grid;
+  grid-template-rows: var(--practical__header_height) calc(
+      100% - var(--practical__header_height)
+    );
   width: 100%;
   max-width: 841px;
+  @include media('>=desktop') {
+    --practical__header_height: 48px;
+  }
 }
 
 .practical__header {
@@ -22,6 +30,11 @@
 
 .practical__body {
   padding: 50px 0 0;
+}
+
+.practical__content {
+  height: 100%;
+  overflow: auto;
 }
 
 .practical__search {
