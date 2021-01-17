@@ -1,3 +1,5 @@
+@import '../../../src/sass-helpers/media';
+
 .practical {
   width: 100%;
   max-width: 841px;
@@ -5,15 +7,32 @@
 
 .practical__header {
   display: grid;
-  grid-template-columns: 54.3% 32%;
+  grid-template-areas:
+    'search'
+    'controls';
+  grid-gap: 24px;
+  grid-template-columns: 100%;
   justify-content: space-between;
   align-items: center;
+  @include media('>=desktop') {
+    grid-template-areas: 'search controls';
+    grid-template-columns: auto auto;
+  }
+}
+
+.practical__search {
+  grid-area: search;
 }
 
 .practical__controls {
+  grid-area: controls;
   display: grid;
-  grid-template-columns: 49% 42%;
-  justify-content: space-between;
+  grid-template-columns: 126px 107px;
+  justify-content: flex-start;
+  grid-gap: 24px;
+  @include media('>=desktop') {
+    justify-content: space-between;
+  }
 }
 
 .practical__list {

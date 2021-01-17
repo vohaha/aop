@@ -148,16 +148,18 @@ export function Practical({
           </div>
           <div className="practical__controls">
             <div className="practical__control-1">
-              <Modal.Trigger>
+              <Modal.Trigger >
                 <Button fullwidth className="button--primary">
                   Create folder
                 </Button>
               </Modal.Trigger>
             </div>
             <div className="practical__control-2">
-              <Button fullwidth className="button--primary">
-                Upload file
-              </Button>
+              <Modal.Trigger>
+                <Button fullwidth className="button--primary">
+                  Upload file
+                </Button>
+              </Modal.Trigger>
             </div>
           </div>
         </header>

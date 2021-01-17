@@ -15,7 +15,7 @@
 
 .layout__main {
   grid-area: main;
-  margin: 41px 0 0 41px;
+  margin: 41px 39px 0 41px;
 }
 
 .layout__header {
