@@ -1,3 +1,5 @@
+@import '../../sass-helpers/media';
+
 .menu {
   color: var(--GRAY2);
   font-size: 16px;
@@ -22,8 +24,11 @@
     color: inherit;
   }
   &[aria-current='page'],
-  &:hover,
   &:focus {
+    color: var(--COLOR1);
+    cursor: pointer;
+  }
+  @include hover() {
     color: var(--COLOR1);
     cursor: pointer;
   }
