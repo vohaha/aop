@@ -2,10 +2,32 @@ import React, { useCallback, useEffect } from 'react';
 import cn from 'classnames';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
+import MultiBackend, {
+  MouseTransition,
+  TouchTransition,
+} from 'react-dnd-multi-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
 import traverse from 'traverse';
 import { FILES_TREE_TYPES, useFilesTree } from '../../hooks/use-files-tree';
+
+const HTML5toTouch = {
+  backends: [
+    {
+      id: 'html5',
+      backend: HTML5Backend,
+      transition: MouseTransition,
+    },
+    {
+      id: 'touch',
+      backend: TouchBackend,
+      options: { enableMouseEvents: true }, // Note that you can call your backends with options
+      preview: true,
+      transition: TouchTransition,
+    },
+  ],
+};
 
 export interface FilesTreeLeaf {
   id: string;
@@ -45,7 +67,8 @@ export function FilesTree({
     setTree(initTree);
   }, [initTree, setTree]);
   return (
-    <DndProvider backend={HTML5Backend}>
+    // @ts-ignore
+    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
       <div className={cn('files-tree', className)}>
         <FilesTreePlot
           tree={tree}
