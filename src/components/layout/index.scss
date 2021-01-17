@@ -70,9 +70,13 @@
 }
 
 .layout__toggle-icon {
-  position: relative;
-  transform: rotate(180deg);
-  font-size: 12px;
-  margin-top: -2px;
-  margin-right: 5px;
+  display: none;
+  @include media('<desktop') {
+    display: block;
+    position: relative;
+    transform: rotate(180deg);
+    font-size: 12px;
+    margin-top: -2px;
+    margin-right: 5px;
+  }
 }
