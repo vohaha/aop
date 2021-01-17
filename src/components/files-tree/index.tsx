@@ -1,15 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import cn from 'classnames';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
 import traverse from 'traverse';
-
-export enum FILES_TREE_TYPES {
-  file = 'file',
-  folder = 'folder',
-}
+import { FILES_TREE_TYPES, useFilesTree } from './use-files-tree';
 
 export interface FilesTreeLeaf {
   id: string;
@@ -44,7 +40,10 @@ export function FilesTree({
   HTMLDivElement
 > &
   FilesTreeProps) {
-  const [tree, setTree] = useState(initTree);
+  const { tree, setTree } = useFilesTree();
+  useEffect(() => {
+    setTree(initTree);
+  }, [initTree, setTree]);
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={cn('files-tree', className)}>

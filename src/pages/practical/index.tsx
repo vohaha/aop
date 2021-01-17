@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import cn from 'classnames';
 import { RouteComponentProps } from '@reach/router';
 import { Page } from '../../components/page';
@@ -9,11 +9,16 @@ import { Prompt } from '../../components/prompt';
 import { ModalTarget } from '../../components/modal';
 import './index.scss';
 import {
-  FILES_TREE_TYPES,
   FilesTree,
   FilesTreeEntity,
   FilesTreeLeaf,
 } from '../../components/files-tree';
+import {
+  FILES_TREE_TYPES,
+  useFilesTree,
+} from '../../components/files-tree/use-files-tree';
+import traverse from 'traverse';
+import { v4 } from 'uuid';
 
 const TREE: FilesTreeLeaf = {
   id: 'root',
@@ -83,6 +88,38 @@ const TREE: FilesTreeLeaf = {
 
 export interface PracticalProps {}
 
+function useNewFolder() {
+  const defaultFolderValue = '';
+  const { tree, setTree } = useFilesTree();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [name, setName] = useState(defaultFolderValue);
+  const onNameChange = useCallback((e) => {
+    setName(e.target.value);
+  }, []);
+  const onCreate = useCallback(() => {
+    const clonedTree = traverse.clone(tree);
+    clonedTree.inner.push({
+      id: v4(),
+      name: name,
+      type: FILES_TREE_TYPES.folder,
+      time: `${Date.now()}`,
+      inner: [],
+    });
+    setTree(clonedTree);
+    setName(defaultFolderValue);
+  }, [name, setTree, tree]);
+  const onFormOpen = useCallback(() => {
+    inputRef.current?.focus();
+  }, []);
+  return {
+    onNameChange,
+    onCreate,
+    name,
+    inputRef,
+    onFormOpen,
+  };
+}
+
 export function Practical({
   className,
 }: React.DetailedHTMLProps<
@@ -95,6 +132,7 @@ export function Practical({
   const onChangeCb = useCallback((e) => {
     setValue(e.target.value);
   }, []);
+  const newFolder = useNewFolder();
   return (
     <Modal.Modal>
       <Page className={cn('practical', className)}>
@@ -132,9 +170,20 @@ export function Practical({
             )}
           />
         </div>
-        <ModalTarget>
-          <Prompt resolveText="Create" title="Create Folder">
-            <Input placeholder="Enter folder name" label="Name" fullwidth />
+        <ModalTarget onOpen={newFolder.onFormOpen}>
+          <Prompt
+            id="newFolderForm"
+            resolveText="Create"
+            title="Create Folder"
+            resolveCb={newFolder.onCreate}>
+            <Input
+              ref={newFolder.inputRef}
+              placeholder="Enter folder name"
+              label="Name"
+              value={newFolder.name}
+              onChange={newFolder.onNameChange}
+              fullwidth
+            />
           </Prompt>
         </ModalTarget>
       </Page>
