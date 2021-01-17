@@ -41,7 +41,12 @@
 }
 
 .entity__folder-sign {
+  position: relative;
   font-size: 12px;
+  .entity--open > .entity__main & {
+    transform-origin: 50% 50%;
+    transform: rotate(180deg);
+  }
 }
 
 .entity__meta {
@@ -74,4 +79,8 @@
 .entity__inner {
   margin: 0 0 4px 0;
   padding: 0 0 0 5%;
+  display: none;
+  .entity--open > & {
+    display: block;
+  }
 }

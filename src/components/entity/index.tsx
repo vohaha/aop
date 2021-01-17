@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import cn from 'classnames';
 import { Icon } from '../icons';
 import './index.scss';
@@ -22,6 +22,14 @@ export interface EntityProps {
   innerComponent: (props: EntityProps) => React.ReactChild;
 }
 
+function useEntity() {
+  const [isOpen, setOpen] = useState(false);
+  const toggle = useCallback(() => {
+    setOpen(!isOpen);
+  }, [isOpen]);
+  return { isOpen, toggle };
+}
+
 export function Entity({
   children,
   className,
@@ -33,9 +41,14 @@ export function Entity({
   HTMLDivElement
 > &
   EntityProps) {
+  const { isOpen, toggle } = useEntity();
   return (
-    <div className={cn('entity', className)} {...props}>
-      <div className="entity__main">
+    <div
+      className={cn('entity', className, {
+        'entity--open': isOpen,
+      })}
+      {...props}>
+      <div className="entity__main" onClick={toggle}>
         <Icon className="entity__hover">draggable</Icon>
         <div className="entity__info">
           <div className="entity__type">
