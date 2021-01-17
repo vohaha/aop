@@ -20,6 +20,10 @@
   }
 }
 
+.practical__body {
+  padding: 50px 0 0;
+}
+
 .practical__search {
   grid-area: search;
 }
@@ -28,15 +32,18 @@
   grid-area: controls;
   display: grid;
   grid-template-columns: 126px 107px;
-  justify-content: flex-start;
-  grid-gap: 24px;
-  //@include media('>=desktop') {
-  //  justify-content: space-between;
-  //}
+  justify-content: space-around;
+  @include media('>=tablet') {
+    grid-template-columns: 126px 107px;
+    grid-gap: 24px;
+    justify-content: flex-start;
+  }
+  @include media('>=desktop') {
+    justify-content: space-between;
+  }
 }
 
 .practical__list {
-  margin: 50px 0 0;
   padding: 0;
   list-style: none;
   li + li {

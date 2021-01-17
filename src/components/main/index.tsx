@@ -18,7 +18,7 @@ export function Main({
   MainProps) {
   return (
     <div className={cn('main', className)} {...props}>
-      <Router>
+      <Router style={{ height: '100%' }}>
         <DashboardPage path="/" />
         <Practical path="practical" />
       </Router>

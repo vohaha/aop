@@ -1,8 +1,8 @@
 import React from 'react';
 import cn from 'classnames';
-import './index.css';
 import { Logo } from '../logo';
 import { Menu } from '../menu';
+import './index.scss';
 
 const MAIN_MENU = [
   {

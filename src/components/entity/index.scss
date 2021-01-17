@@ -9,11 +9,14 @@
   align-items: center;
   justify-content: space-between;
   height: 49px;
-  padding: 0 32px 0 29px;
+  padding: 0 15px;
   box-shadow: var(--entity-shadow, 0 2px 4px rgba(0, 0, 0, 0.15));
   &:hover {
     --entity-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
     --entity-hover-display: block;
+  }
+  @include media('>=tablet') {
+    padding: 0 32px 0 29px;
   }
 }
 

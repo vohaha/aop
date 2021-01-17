@@ -51,9 +51,9 @@
 
 .layout__main {
   grid-area: main;
-  margin: 15px;
+  padding: 15px;
   @include media('>=desktop') {
-    margin: 41px 39px 35px 41px;
+    padding: 41px 39px 35px 41px;
   }
 }
 
