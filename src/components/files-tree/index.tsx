@@ -109,6 +109,29 @@ export interface FilesTreePlotProps {
   tag?: string;
 }
 
+function isDropValid(
+  id: FilesTreeLeaf['id'],
+  tree: FilesTreeLeaf,
+  dragId: FilesTreeLeaf['id'],
+) {
+  let notAllowedIds: string[] = [];
+  let fromRootToRoot = false;
+  traverse(tree).forEach(function (treeItem) {
+    if (treeItem?.id === dragId) {
+      fromRootToRoot = !!this.parent?.parent?.isRoot && id === 'root';
+      traverse(treeItem.inner).forEach((treeItem) => {
+        if (treeItem.id != null) {
+          notAllowedIds.push(treeItem.id);
+        }
+      });
+    }
+  });
+  return (
+    !notAllowedIds.find((notAllowedId) => notAllowedId === id) &&
+    !fromRootToRoot
+  );
+}
+
 export function FilesTreePlot({
   children,
   className,
@@ -129,9 +152,19 @@ export function FilesTreePlot({
       type === FILES_TREE_TYPES.folder
         ? [FILES_TREE_TYPES.folder, FILES_TREE_TYPES.file]
         : [],
-    canDrop: (dragItem, monitor) => (dragItem as any).id !== id,
+    canDrop: (dragItem, monitor) => {
+      return (
+        (dragItem as any).id !== id &&
+        isDropValid(id, tree, (dragItem as any).id)
+      );
+    },
     drop: (item, monitor) => (monitor.isOver() ? { id } : undefined),
-    collect: (monitor) => ({ isOver: monitor.isOver({ shallow: true }) }),
+    collect: (monitor) => ({
+      isOver:
+        monitor.isOver({ shallow: true }) &&
+        monitor.getItem().id !== id &&
+        isDropValid(id, tree, monitor.getItem().id),
+    }),
   });
   const Tag: any = `${tag}`;
   return (
