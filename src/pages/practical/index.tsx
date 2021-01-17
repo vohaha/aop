@@ -16,7 +16,7 @@ import {
 import {
   FILES_TREE_TYPES,
   useFilesTree,
-} from '../../components/files-tree/use-files-tree';
+} from '../../hooks/use-files-tree';
 import traverse from 'traverse';
 import { v4 } from 'uuid';
 

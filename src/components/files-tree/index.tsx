@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import './index.scss';
 import { Entity, EntityData, EntityProps, EntityType } from '../entity';
 import traverse from 'traverse';
-import { FILES_TREE_TYPES, useFilesTree } from './use-files-tree';
+import { FILES_TREE_TYPES, useFilesTree } from '../../hooks/use-files-tree';
 
 export interface FilesTreeLeaf {
   id: string;

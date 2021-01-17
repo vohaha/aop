@@ -3,7 +3,6 @@ import cn from 'classnames';
 import './index.scss';
 
 export interface ButtonProps {
-  tag?: string;
   fullwidth?: boolean;
 }
 
@@ -13,18 +12,17 @@ export type ButtonPropsAll = React.DetailedHTMLProps<
 > &
   ButtonProps;
 
-export const Button = React.forwardRef<HTMLElement, ButtonPropsAll>(
-  ({ children, className, fullwidth, tag = 'button', ...props }, ref) => {
-    const Tag: any = tag;
+export const Button = React.forwardRef<HTMLButtonElement, ButtonPropsAll>(
+  ({ children, className, fullwidth, ...props }, ref) => {
     return (
-      <Tag
+      <button
         {...props}
         ref={ref}
         className={cn('button', className, {
           'button--fullwidth': fullwidth,
         })}>
         {children}
-      </Tag>
+      </button>
     );
   },
 );

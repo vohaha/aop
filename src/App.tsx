@@ -3,19 +3,22 @@ import { Aside } from './components/aside';
 import { Header } from './components/hedaer';
 import { Layout } from './components/layout';
 import { Main } from './components/main';
-import { ProvideFilesTree } from './components/files-tree/use-files-tree';
+import { ProvideFilesTree } from './hooks/use-files-tree';
+import { ProvideLayout } from './hooks/use-layout';
 
 function App() {
   return (
     <ProvideFilesTree>
-      <Layout>
-        {{
-          header: <Header />,
-          aside: <Aside />,
-          main: <Main />,
-        }}
-      </Layout>
-      <div id="portals" />
+      <ProvideLayout>
+        <Layout>
+          {{
+            header: <Header />,
+            aside: <Aside />,
+            main: <Main />,
+          }}
+        </Layout>
+        <div id="portals" />
+      </ProvideLayout>
     </ProvideFilesTree>
   );
 }

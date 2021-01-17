@@ -30,9 +30,9 @@
   grid-template-columns: 126px 107px;
   justify-content: flex-start;
   grid-gap: 24px;
-  @include media('>=desktop') {
-    justify-content: space-between;
-  }
+  //@include media('>=desktop') {
+  //  justify-content: space-between;
+  //}
 }
 
 .practical__list {

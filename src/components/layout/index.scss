@@ -1,0 +1,70 @@
+@import '../../sass-helpers/media';
+
+.layout {
+  display: grid;
+  grid-template-areas:
+    'aside header'
+    'aside main';
+  height: 100%;
+  overflow: hidden;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: auto 1fr;
+  background-color: var(--GRAY3);
+  @include media('>=desktop') {
+    grid-template-rows: auto 1fr;
+  }
+}
+
+.layout__aside {
+  grid-area: aside;
+  @include media('<desktop') {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translate(-100%, 0);
+    transition: 0.3s transform ease-out;
+    z-index: var(--Z-ACTIVE);
+    .layout--aside-open & {
+      transform: translate(0, 0);
+    }
+  }
+  @include media('>=desktop') {
+    position: static;
+  }
+}
+
+.layout__aside-underlay.layout__aside-underlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 300vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  .layout--aside-open & {
+    display: block;
+  }
+}
+
+.layout__main {
+  grid-area: main;
+  margin: 41px 39px 0 41px;
+}
+
+.layout__header {
+  grid-area: header;
+}
+
+.layout__toggle {
+  display: flex;
+  align-items: center;
+}
+
+.layout__toggle-icon {
+  position: relative;
+  transform: rotate(180deg);
+  font-size: 12px;
+  margin-top: -2px;
+  margin-right: 5px;
+}

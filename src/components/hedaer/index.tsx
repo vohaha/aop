@@ -1,6 +1,7 @@
 import React from 'react';
 import cn from 'classnames';
 import './index.css';
+import { LayoutToggle } from '../layout';
 
 export interface HeaderProps {}
 
@@ -15,7 +16,9 @@ export function Header({
   HeaderProps) {
   return (
     <header className={cn('header', className)} {...props}>
-      <h1 className="header__title">Practical & More</h1>
+      <LayoutToggle>
+        <div className="header__title">Practical & More</div>
+      </LayoutToggle>
       <div className="header__icon">
         <svg
           width="50"

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from 'react';
-import { FilesTreeLeaf } from './index';
+import { FilesTreeLeaf } from '../components/files-tree';
 
 export enum FILES_TREE_TYPES {
   file = 'file',
