@@ -1,4 +1,6 @@
 .aside {
+  display: grid;
+  grid-template-rows: 171px auto;
   width: var(--ASIDE_WIDTH);
   height: 100%;
   background-color: var(--GRAY1);
@@ -10,11 +12,11 @@
   align-items: flex-end;
   justify-content: center;
   width: 100%;
-  height: 171px;
 }
 
 .aside__menu {
   --menu__btn-height: 50px;
 
   padding: 48px 35px 22px 36px;
+  overflow: auto;
 }
