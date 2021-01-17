@@ -11,6 +11,9 @@
   @include media('>=desktop') {
     --practical__header_height: 48px;
   }
+  @media (max-height: 480px) {
+    grid-template-rows: 100%;
+  }
 }
 
 .practical__header {
@@ -26,10 +29,16 @@
     grid-template-areas: 'search controls';
     grid-template-columns: auto auto;
   }
+  @media (max-height: 480px) {
+    display: none;
+  }
 }
 
 .practical__body {
   padding: 50px 0 0;
+  @media (max-height: 480px) {
+    padding: 0;
+  }
 }
 
 .practical__content {
