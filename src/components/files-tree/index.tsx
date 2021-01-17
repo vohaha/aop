@@ -68,7 +68,7 @@ export function FilesTree({
   }, [initTree, setTree]);
   return (
     // @ts-ignore
-    <DndProvider backend={MultiBackend} options={HTML5toTouch}>
+    <DndProvider backend={HTML5Backend}>
       <div className={cn('files-tree', className)}>
         <FilesTreePlot
           tree={tree}
