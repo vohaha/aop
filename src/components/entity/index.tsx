@@ -63,7 +63,10 @@ export function Entity({
         </div>
         <div className="entity__meta">
           <div className="entity__time">{time}</div>
-          <div className="entity__menu">
+          <div className="entity__menu" onClick={(e) => {
+            e.stopPropagation();
+            alert('Item menu not implemented yet.')
+          }}>
             <Icon>vertical-hamburger</Icon>
           </div>
         </div>
